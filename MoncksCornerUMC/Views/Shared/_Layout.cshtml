@@ -1,0 +1,293 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Moncks Corner United Methodist Church</title>
+    <meta name="keywords" content="MCUMC,Church,Moncks Corner,United Methodist,Worship" />
+    <meta name="description" content="Moncks Corner United Methodist Church" />
+    <meta name="Author" content="Bart Brock [www.mbc-technologies.com]" />
+
+    <!-- mobile settings -->
+    @*<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />*@
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- WEB FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800" rel="stylesheet" type="text/css" />
+
+    @Styles.Render("~/content/css");
+    @Styles.Render("~/styleswitcher/css");
+    @Scripts.Render("~/bundles/modernizr");
+
+    @*<!-- CORE CSS -->
+    <link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/plugins/owl-carousel/owl.carousel.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/plugins/owl-carousel/owl.theme.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/plugins/owl-carousel/owl.transitions.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/plugins/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/animate.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/superslides.css" rel="stylesheet" type="text/css" />
+    
+    <!-- REVOLUTION SLIDER -->
+    <link href="~/assets/plugins/slider.revolution.v4/css/settings.css" rel="stylesheet" type="text/css" />
+
+    <!-- COUNTDOWN CSS -->
+    <link href="assets/css/countdown.css" rel="stylesheet" type="text/css" />
+
+    <!-- THEME CSS -->
+    <link href="/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/layout-responsive.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/color_scheme/red.css" rel="stylesheet" type="text/css" /><!-- orange: default style -->
+    <link href="/assets/css/custom.css" rel="stylesheet" type="text/css" />
+
+    <!-- Morenizr -->
+    <script type="text/javascript" src="/assets/plugins/modernizr.min.js"></script>*@
+
+</head>
+<body>
+    <!-- Available classes for body: boxed , pattern1...pattern10 . Background Image - example add: data-background="~/assets/images/boxed_background/1.jpg"  -->
+    <!-- Top Bar -->
+    <header id="topHead">
+        <div class="container">
+
+            <!-- PHONE/EMAIL -->
+            <span class="quick-contact pull-left">
+                <i class="fa fa-phone"></i> 843-761-8547 &bull;
+                <a class="hidden-xs" href="mailto:office@monckscornerumc.org">office@monckscornerumc.org</a>
+            </span>
+            <!-- /PHONE/EMAIL -->
+            <!-- SIGN IN -->
+            <div class="pull-right nav signin-dd">
+                <a id="quick_sign_in" href="page-signin.html" data-toggle="dropdown"><i class="fa fa-users"></i><span class="hidden-xs"> Sign In</span></a>
+                <div class="dropdown-menu" role="menu" aria-labelledby="quick_sign_in">
+
+                    <h4>Sign In</h4>
+                    <form action="page-signin.html" method="post" role="form">
+
+                        <div class="form-group">
+                            <!-- email -->
+                            <input required type="email" class="form-control" placeholder="Username or email">
+                        </div>
+
+                        <div class="input-group">
+
+                            <!-- password -->
+                            <input required type="password" class="form-control" placeholder="Password">
+
+                            <!-- submit button -->
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary">Sign In</button>
+                            </span>
+
+                        </div>
+
+                        <div class="checkbox">
+                            <!-- remmember -->
+                            <label>
+                                <input type="checkbox"> Remember me &bull; <a href="page-signin.html">Forgot password?</a>
+                            </label>
+                        </div>
+
+                    </form>
+
+                    <hr />
+
+                    <a href="#" class="btn-facebook fullwidth radius3"><i class="fa fa-facebook"></i> Connect With Facebook</a>
+                    <a href="#" class="btn-twitter fullwidth radius3"><i class="fa fa-twitter"></i> Connect With Twitter</a>
+                    <!--<a href="#" class="btn-google-plus fullwidth radius3"><i class="fa fa-google-plus"></i> Connect With Google</a>-->
+
+                    <p class="bottom-create-account">
+                        <a href="page-signup.html">Manual create account</a>
+                    </p>
+                </div>
+            </div>
+            <!-- /SIGN IN -->
+        </div>
+    </header>
+    <!-- /Top Bar -->
+    <!-- TOP NAV -->
+    <header id="topNav" class="topHead">
+        <!-- remove class="topHead" if no topHead used! -->
+        <div class="container">
+
+            <!-- Mobile Menu Button -->
+            <button class="btn btn-mobile" data-toggle="collapse" data-target=".nav-main-collapse">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- Logo text or image -->
+            <a class="logo" href="index.html">
+                <img src="~/images/CrossandFlame_logo.png" alt="MCUMC" />
+            </a>
+
+            <!-- Top Nav -->
+            <div class="navbar-collapse nav-main-collapse collapse pull-right">
+                <nav class="nav-main mega-menu">
+                    <ul class="nav nav-pills nav-main scroll-menu" id="topMain">
+                        <!-- Home -->
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <!-- Worship -->
+                        <li>@Html.ActionLink("Worship", "Worship", "Home")</li>
+                        <!-- Events -->
+                        <li>@Html.ActionLink("Events", "Events", "Home")</li>
+                        <!-- Ministries -->
+                        <li>@Html.ActionLink("Ministries", "Ministries", "Home")</li>
+                        <!-- Children -->
+                        <li>@Html.ActionLink("Children", "Children", "Home")</li>
+                        <!-- Youth -->
+                        <li>@Html.ActionLink("Youth", "Youth", "Home")</li>
+                        <!-- Missions -->
+                        <li>@Html.ActionLink("Missions", "Missions", "Home")</li>
+                        <!-- Publications -->
+                        <li>@Html.ActionLink("Publications", "Publications", "Home")</li>
+                        <!-- Giving -->
+                        <li>@Html.ActionLink("Giving", "Giving", "Home")</li>
+                        <!-- About -->
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <!-- Contact -->
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <!-- GLOBAL SEARCH -->
+                        <li class="search">
+                            <!-- search form -->
+                            <form method="get" action="#" class="input-group pull-right">
+                                <input type="text" class="form-control" name="k" id="k" value="" placeholder="Search">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary notransition"><i class="fa fa-search"></i></button>
+                                </span>
+                            </form>
+                            <!-- /search form -->
+                        </li>
+                        <!-- /GLOBAL SEARCH -->
+                    </ul>
+                </nav>
+            </div>
+            <!-- /Top Nav -->
+
+        </div>
+    </header>
+
+    <span id="header_shadow"></span>
+    <!-- /TOP NAV -->
+    <!-- WRAPPER -->
+    <div id="wrapper">
+        @RenderBody()
+        <hr />
+    </div>
+    <!-- /WRAPPER -->
+
+    <!-- FOOTER -->
+    <footer>
+
+        <!-- copyright , scrollTo Top -->
+        <div class="footer-bar">
+            <div class="container">
+                <span class="copyright">Copyright &copy; Moncks Corner United Methodist Church. All Rights Reserved.</span>
+                <a class="toTop" href="#topNav">BACK TO TOP <i class="fa fa-arrow-circle-up"></i></a>
+            </div>
+        </div>
+        <!-- copyright , scrollTo Top -->
+        <!-- footer content -->
+        <div class="footer-content">
+            <div class="container">
+
+                <div class="row">
+
+                    <!-- FOOTER CONTACT INFO -->
+                    <div class="column col-md-4">
+                        <h3>MISSION STATEMENT</h3>
+
+                        <p class="contact-desc">
+                            Proclaiming that Jesus Christ is Lord to our community and to the world through worship, mission, discipleship, and service to others.
+                        </p>
+                        <h3>CONTACT</h3>
+                        <address class="font-opensans">
+                            <ul>
+                                <li class="footer-sprite address">
+                                    106 Church Street<br />
+                                    Moncks Corner, SC 29461<br />
+                                </li>
+                                <li class="footer-sprite phone">
+                                    Phone: 843-761-8547
+                                </li>
+                                <li class="footer-sprite email">
+                                    <a href="mailto:office@monckscornerumc.org">office@monckscornerumc.org</a>
+                                </li>
+                            </ul>
+                        </address>
+
+                    </div>
+                    <!-- /FOOTER CONTACT INFO -->
+                    <!-- FOOTER LOGO -->
+                    <div class="column logo col-md-4 text-center">
+                        <div class="logo-content">
+                            <img class="animate_fade_in" src="~/images/CrossandFlame_scroll2.png" width="200" alt="" />
+                            <h4>MCUMC</h4>
+                        </div>
+                    </div>
+                    <!-- /FOOTER LOGO -->
+                    <!-- FOOTER LATEST POSTS -->
+                    <div class="column col-md-4 text-right">
+                        <h3>WORSHIP SERVICES</h3>
+
+                        <div class="post-item">
+                            <small>Sunday Services</small>
+                            <h5>Worship 9:00am</h5>
+                            <h5>Sunday School 10:00am</h5>
+                            <h5>Worship 11:00am</h5>
+                        </div>
+                        <div class="post-item">
+                            <small>Wednesday Night of Worship</small>
+                            <h5>Dinner 5:30pm</h5>
+                            <h5>Bible Study 6:00pm</h5>
+                        </div>
+
+                        <a href="/Home/Worship" class="view-more pull-right">View Worship Series <i class="fa fa-arrow-right"></i></a>
+
+                    </div>
+                    <!-- /FOOTER LATEST POSTS -->
+
+                </div>
+
+            </div>
+        </div>
+        <!-- footer content -->
+
+    </footer>
+    <!-- /FOOTER -->
+    <!-- JAVASCRIPT FILES -->
+    @*<script type="text/javascript" src="/assets/plugins/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery.appear.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery.isotope.js"></script>
+    <script type="text/javascript" src="/assets/plugins/masonry.js"></script>
+
+    <script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/owl-carousel/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/stellar/jquery.stellar.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/knob/js/jquery.knob.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery.backstretch.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/superslides/dist/jquery.superslides.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/mediaelement/build/mediaelement-and-player.min.js"></script>
+
+    <!-- REVOLUTION SLIDER -->
+    <script type="text/javascript" src="/assets/plugins/revolution-slider/js/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/revolution-slider/js/jquery.themepunch.revolution.min.js"></script>
+    <script type="text/javascript" src="/assets/js/slider_revolution.js"></script>
+
+    <!-- COUNTDOWN JS -->
+    <script type="text/javascript" src="/assets/plugins/jquery-countdown/jquery.countdown.min.js"></script>
+    <script type="text/javascript" src="/assets/js/countdown.js"></script>
+
+    <script type="text/javascript" src="/assets/js/scripts.js"></script>*@
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/plugins")
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<MoncksCornerUMC.Models.Rss>
+
+<!-- PAGE TITLE -->
+<header id="page-title">
+    <!-- style="background-image:url('assets/images/demo/parallax_bg.jpg')" -->
+    <!--
+        Enable only if bright background image used
+        <span class="overlay"></span>
+    -->
+
+    <div class="container">
+        <h1>Upcoming Events</h1>
+    </div>
+</header>
+<section>
+    <div>
+        @foreach (var entry in Model)
+        {
+            <div class="block-separator clearfix"></div>
+    <!-- all listings block -->
+            <div class="row listing-container">
+                <div class="col-sm-12">
+                    <!-- event listing -->
+                    <div class="listing-content">
+                        <div class="col-sm-3 col-md-3">
+                            <!-- event date -->
+                            <div class="event-list-item-date">
+                                <span class="event-date">
+                                    <span class="event-day">@entry.PubDateString.Day.ToString()</span>
+                                    <span class="event-month">@entry.PubDateString.ToString("Y")</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <div class="lined-info">
+                                <h4><a href="@entry.Link" class="event-title">@entry.Title</a></h4>
+                            </div>
+                            <div class="lined-info">
+                                <span class="meta-data"><i class="fa fa-clock-o"></i> @entry.PubDateString.DayOfWeek, <span class="event-time">@entry.PubDateString.TimeOfDay</span></span>
+                            </div>
+                        </div>
+                        <!-- listing summary content -->
+                        <div class="col-sm-6">
+                            <div class="event-list-item-info">
+                                <div class="lined-info event-location">
+                                    <span class="meta-data"><i class="fa fa-map-marker"></i> <span class="event-location-address">@Html.Raw(entry.Description)</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<!-- calendar iframes -->
+<section>
+    <div class="container">
+        <iframe class="calendar" width="490" height="400" frameborder="0" src="http://www.mychurchevents.com/calendar/views/listview.aspx?ci=L6N8N8J4I3I3O9L6I3&list_by=dayspan&DayCount=30&select_by=all_interest_groups&igd=">
+        </iframe>
+    </div>
+</section>
+    
+
+
