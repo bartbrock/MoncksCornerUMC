@@ -3298,6 +3298,15 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Home\Children.cshtml" />
+    <Content Include="Views\Home\Events.cshtml" />
+    <Content Include="Views\Home\Giving.cshtml" />
+    <Content Include="Views\Home\GivingCountDown.cshtml" />
+    <Content Include="Views\Home\Ministries.cshtml" />
+    <Content Include="Views\Home\Missions.cshtml" />
+    <Content Include="Views\Home\Publications.cshtml" />
+    <Content Include="Views\Home\Worship.cshtml" />
+    <Content Include="Views\Home\Youth.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -24,10 +24,11 @@ namespace MoncksCornerUMC.Controllers
         public ActionResult Events()
         {
             ViewBag.Message = "Your Events page.";
+            CalendarFeed calFeed = new CalendarFeed();
             string eventGroupID = "SpecialEvents";
             string numDays = "14";
             string calURL = CalendarData.CalendarURL;
-            return View(CalendarFeed.GetRssFeed(eventGroupID, numDays, calURL));
+            return View(calFeed.GetRssFeed(eventGroupID, numDays, calURL));
         }
 
         public ActionResult Ministries()
