@@ -22,7 +22,7 @@ namespace MoncksCornerUMC.Models
     }
     public class EventsViewModel
     {
-                
+
     }
 
     public class Rss
@@ -32,9 +32,8 @@ namespace MoncksCornerUMC.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime PubDateString { get; set; }
-        public string EventDay { get; set; }
-        public string EventMonthYear { get; set; }
-        public string BadURL { get; set; }
+        //public string EventDay { get; set; }
+        //public string EventMonthYear { get; set; }
     }
 
     public class CalendarFeed
@@ -61,42 +60,62 @@ namespace MoncksCornerUMC.Models
             string _groupIndex;
             Uri uriResult;
             bool GoodUrl;
+            // bool testUrl = true;
+            XDocument feedXml;
             IEnumerable<Rss> returnData = new Rss[0];
 
             // Validate Group ID
             _index = Array.IndexOf(CalendarData.GroupIdTable, groupID);
-            _groupIndex = CalendarData.GroupIdIndex[_index];
-            if (_groupIndex == null)
-                {
-                    _errorCode = 1;    // assign error code 
-                    _groupIndex = "";  // if group index is bad set to empty and continue
-                }  
-            
+            if (_index < 0)
+            {
+                _errorCode = 1;    // assign error code 
+                _groupIndex = "";  // if group index is bad set to empty and continue
+            }
+            else
+            {
+                _groupIndex = CalendarData.GroupIdIndex[_index];
+            }
 
             // Create URL and verify
             rssFeedUrl = rssURL + _groupIndex;
-            GoodUrl = Uri.TryCreate(rssFeedUrl, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
+            
+            GoodUrl = Uri.TryCreate(rssFeedUrl, UriKind.RelativeOrAbsolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;  // set to RelativeOrAbsolute for testing; reset to Absolute
 
             // Extract Data
             if (GoodUrl)
             {
-                XDocument feedXml = XDocument.Load(rssFeedUrl);
-                var feeds = from feed in feedXml.Descendants("item")
-                            select new Rss
-                            {
-                                Title = feed.Element("title").Value,
-                                Link = feed.Element("link").Value,
-                                //Description = Regex.Match(feed.Element("description").Value, @"^.{1,180}\b(?<!\s)").Value,
-                                Description = feed.Element("description").Value,
-                                PubDateString = Convert.ToDateTime(feed.Element("pubDate").Value).ToLocalTime()
-                            };
-                if (feeds != null)
+                try
                 {
-                    returnData = feeds; // good XML data
+                    feedXml = XDocument.Load(rssFeedUrl);
+                }
+                catch (Exception e)
+                {
+                    feedXml = null;
+                }
+                
+                if (feedXml != null)
+                {
+                    var feeds = from feed in feedXml.Descendants("item")
+                                select new Rss
+                                {
+                                    Title = feed.Element("title").Value,
+                                    Link = feed.Element("link").Value,
+                                    //Description = Regex.Match(feed.Element("description").Value, @"^.{1,180}\b(?<!\s)").Value,
+                                    Description = feed.Element("description").Value,
+                                    PubDateString = Convert.ToDateTime(feed.Element("pubDate").Value).ToLocalTime()
+                                };
+                    if (feeds.Any())
+                    {
+                        returnData = feeds; // good XML data
+                    }
+                    else
+                    {
+                        _errorCode += 1000;  // XML data corrupt
+                    }
                 }
                 else
                 {
-                    _errorCode += 100;  // XML data corrupt
+                    _errorCode += 100;  // RSS data read error
                 }
             }
             else
@@ -104,9 +123,48 @@ namespace MoncksCornerUMC.Models
                 // Process Bad URL
                 _errorCode += 10;
             }
+            if (_errorCode > 0)
+            {
+                // if it was a groupid error all events are passed and error message is appended to the end
+                returnData = returnData.Concat(new[] { CalendarError(_errorCode) });
+            }
             return returnData;
         }
 
-         
+        public Rss CalendarError(int errorCode)
+        {
+            Rss _errorReturn = new Rss();
+
+            if (errorCode != 0)  // verify error exists
+            {
+                _errorReturn.Link = "emailto:webmaster@monckscornerumc.org";  // set for all errors
+                _errorReturn.PubDateString = DateTime.Now;
+                _errorReturn.Title = "Error Code = " + errorCode.ToString();
+                _errorReturn.Description = "Contact website administrator. ";
+
+                if (errorCode >= 1000)  //  XML error
+                {
+                    errorCode -= 1000;
+                    _errorReturn.Description += "XML error occured. Unable to retrieve calendar events.";
+                }
+                if (errorCode >= 100)  // RSS error
+                {
+                    errorCode -= 100;
+                    _errorReturn.Description += "RSS error occured. Unable to retrieve calendar events.";
+                }
+                if (errorCode >= 10)  // URL error
+                {
+                    errorCode -= 10;
+                    _errorReturn.Description += "URL error occured.  Unable to retrieve calendar events.";
+                }
+                if (errorCode == 1)  // Group ID error
+                {
+                    _errorReturn.Description += "Group ID error.  All events displayed.";
+                }
+
+
+            }
+            return _errorReturn;
+        }
     }
 }

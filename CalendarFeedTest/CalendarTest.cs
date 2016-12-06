@@ -14,12 +14,10 @@ namespace CalendarFeedTest
     public class CalendarTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestCalendarValidData()
         {
             // arrange  
-            double beginningBalance = 11.99;
-            double debitAmount = 4.55;
-            double expected = 7.44;
+
             CalendarFeed TestFeed = new CalendarFeed();
             Rss calendarDataBlock = new Rss();
             IEnumerable<Rss> calendarDataList = new Rss[0];
@@ -28,16 +26,172 @@ namespace CalendarFeedTest
 
             // act  
             calendarDataBlock.Title = "Worship";
-            calendarDataBlock.Description = "< b > Worship </ b > -12 / 11 / 2016 - 9:00 AM to 10:00 AM < br />< br />";
-            calendarDataBlock.Link = " http://calendar.churchart.com/calendar/calendar.aspx?cei=262662443&event_date=12/11/2016&ci=73866977&igd=98186886";
+            calendarDataBlock.Description = "<b>Worship</b> - 12/11/2016 - 9:00 AM to 10:00 AM<br /><br />";
+            calendarDataBlock.Link = "http://calendar.churchart.com/calendar/calendar.aspx?cei=262662443&event_date=12/11/2016&ci=73866977&igd=98186886";
             calendarDataBlock.PubDateString = Convert.ToDateTime(" 2016 - 12 - 11T14: 00:00Z ").ToLocalTime();
 
             calendarDataList = TestFeed.GetRssFeed("Worship", "7", CalendarData.CalendarURL);
 
             // assert  
-            Assert.AreEqual(calendarDataBlock, calendarDataList.First());
-            //double actual = account.Balance;
-            //Assert.AreEqual(expected, actual, 0.001, "Account not debited correctly");
+            Assert.AreEqual(calendarDataBlock.Title, calendarDataList.First().Title);
+            Assert.AreEqual(calendarDataBlock.Description, calendarDataList.First().Description);
+            Assert.AreEqual(calendarDataBlock.Link, calendarDataList.First().Link);
+            Assert.AreEqual(calendarDataBlock.PubDateString, calendarDataList.First().PubDateString);
+
+        }
+
+
+        [TestMethod]
+        public void TestCalendarValidDataFromFile()
+        {
+            // arrange  
+
+            CalendarFeed TestFeed = new CalendarFeed();
+            Rss calendarDataBlock = new Rss();
+            IEnumerable<Rss> calendarDataList = new Rss[0];
+
+            // call function to fill expected values
+
+            // act  
+            calendarDataBlock.Title = "Worship";
+            calendarDataBlock.Description = "<b>Worship</b> - 12/11/2016 - 9:00 AM to 10:00 AM<br /><br />";
+            calendarDataBlock.Link = "http://calendar.churchart.com/calendar/calendar.aspx?cei=262662443&event_date=12/11/2016&ci=73866977&igd=98186886";
+            calendarDataBlock.PubDateString = Convert.ToDateTime(" 2016 - 12 - 11T14: 00:00Z ").ToLocalTime();
+
+            calendarDataList = TestFeed.GetRssFeed("dont care", "7", "http://www.coffeecupcampers.org/documents/RSS_Data_Feed.xml");  // must use invalid group id to use empty group index
+
+            // assert  
+            Assert.AreEqual(calendarDataBlock.Title, calendarDataList.First().Title);
+            Assert.AreEqual(calendarDataBlock.Description, calendarDataList.First().Description);
+            Assert.AreEqual(calendarDataBlock.Link, calendarDataList.First().Link);
+            Assert.AreEqual(calendarDataBlock.PubDateString, calendarDataList.First().PubDateString);
+
+        }
+        [TestMethod]
+        public void TestCalendarInvalidDataFromFile()
+        {
+            // arrange  
+
+            CalendarFeed TestFeed = new CalendarFeed();
+            Rss calendarDataBlock = new Rss();
+            IEnumerable<Rss> calendarDataList = new Rss[0];
+
+            // call function to fill expected values
+
+            // act  
+            calendarDataBlock.Title = "Error";
+            calendarDataBlock.Description = "Group ID error";
+            calendarDataBlock.Link = "webmaster";
+            calendarDataBlock.PubDateString = DateTime.Now;
+
+            calendarDataList = TestFeed.GetRssFeed("dont care", "7", "http://www.coffeecupcampers.org/documents/RSS_Corrupt_Data.xml");  // must use invalid group id to use empty group index
+
+            // assert  
+            StringAssert.Contains(calendarDataList.Last().Title, calendarDataBlock.Title);
+            StringAssert.Contains(calendarDataList.Last().Description, calendarDataBlock.Description);
+            StringAssert.Contains(calendarDataList.Last().Link, calendarDataBlock.Link);
+            StringAssert.StartsWith(calendarDataList.Last().PubDateString.ToString(), calendarDataBlock.PubDateString.ToString("d"));  // just check date
+
+        }
+
+
+        [TestMethod]
+        public void TestCalendarGroupIDError()
+        {
+            // arrange  
+            CalendarFeed TestFeed = new CalendarFeed();
+            Rss calendarDataBlock = new Rss();
+            IEnumerable<Rss> calendarDataList = new Rss[0];
+
+            // call function to fill expected values
+
+            // act  
+            calendarDataBlock.Title = "Error";
+            calendarDataBlock.Description = "Group ID error";
+            calendarDataBlock.Link = "webmaster";
+            calendarDataBlock.PubDateString = DateTime.Now;
+
+            calendarDataList = TestFeed.GetRssFeed("BadGroupID", "7", CalendarData.CalendarURL);
+
+            // assert  
+            StringAssert.Contains(calendarDataList.Last().Title, calendarDataBlock.Title);
+            StringAssert.Contains(calendarDataList.Last().Description, calendarDataBlock.Description);
+            StringAssert.Contains(calendarDataList.Last().Link, calendarDataBlock.Link);
+            StringAssert.StartsWith(calendarDataList.Last().PubDateString.ToString(), calendarDataBlock.PubDateString.ToString("d"));  // just check date
+
+        }
+
+        [TestMethod]
+        public void TestCalendarUrlError()
+        {
+            // arrange  
+            CalendarFeed TestFeed = new CalendarFeed();
+            Rss calendarDataBlock = new Rss();
+            IEnumerable<Rss> calendarDataList = new Rss[0];
+
+            // act  
+            calendarDataBlock.Title = "Error";
+            calendarDataBlock.Description = "URL error";
+            calendarDataBlock.Link = "webmaster";
+            calendarDataBlock.PubDateString = DateTime.Now;
+
+            calendarDataList = TestFeed.GetRssFeed("Worship", "7", "hddp:/www.bartbrock.com/");
+
+            // assert  
+            StringAssert.Contains(calendarDataList.First().Title, calendarDataBlock.Title);
+            StringAssert.Contains(calendarDataList.First().Description, calendarDataBlock.Description);
+            StringAssert.Contains(calendarDataList.First().Link, calendarDataBlock.Link);
+            StringAssert.StartsWith(calendarDataList.First().PubDateString.ToString(), calendarDataBlock.PubDateString.ToString("d"));  // just check date
+
+        }
+
+        [TestMethod]
+        public void TestCalendarRssError()
+        {
+            // arrange  
+            CalendarFeed TestFeed = new CalendarFeed();
+            Rss calendarDataBlock = new Rss();
+            IEnumerable<Rss> calendarDataList = new Rss[0];
+
+            // act  
+            calendarDataBlock.Title = "Error";
+            calendarDataBlock.Description = "RSS error";
+            calendarDataBlock.Link = "webmaster";
+            calendarDataBlock.PubDateString = DateTime.Now;
+
+            calendarDataList = TestFeed.GetRssFeed("Worship", "7", "http://www.bartbrock.com/");
+
+            // assert  
+            StringAssert.Contains(calendarDataList.First().Title, calendarDataBlock.Title);
+            StringAssert.Contains(calendarDataList.First().Description, calendarDataBlock.Description);
+            StringAssert.Contains(calendarDataList.First().Link, calendarDataBlock.Link);
+            StringAssert.StartsWith(calendarDataList.First().PubDateString.ToString(), calendarDataBlock.PubDateString.ToString("d"));  // just check date
+
+        }
+
+        [TestMethod]
+        public void TestCalendarXmlError()
+        {
+            // arrange  
+            CalendarFeed TestFeed = new CalendarFeed();
+            Rss calendarDataBlock = new Rss();
+            IEnumerable<Rss> calendarDataList = new Rss[0];
+
+            // act  
+            calendarDataBlock.Title = "Error";
+            calendarDataBlock.Description = "XML error";
+            calendarDataBlock.Link = "webmaster";
+            calendarDataBlock.PubDateString = DateTime.Now;
+
+            calendarDataList = TestFeed.GetRssFeed("Worship", "7", "http://www.bartbrock.com/");
+
+            // assert  
+            Assert.Inconclusive();
+            //StringAssert.Contains(calendarDataList.First().Title, calendarDataBlock.Title);
+            //StringAssert.Contains(calendarDataList.First().Description, calendarDataBlock.Description);
+            //StringAssert.Contains(calendarDataList.First().Link, calendarDataBlock.Link);
+            //StringAssert.StartsWith(calendarDataList.First().PubDateString.ToString(), calendarDataBlock.PubDateString.ToString("d"));  // just check date
+
         }
     }
 }
