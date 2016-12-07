@@ -13,6 +13,13 @@ namespace CalendarFeedTest
     [TestClass]
     public class CalendarTest
     {
+        private TestContext testContext;
+        public TestContext TestContext
+        {
+            get { return testContext; }
+            set { testContext = value; }
+        }
+
         [TestMethod]
         public void TestCalendarValidData()
         {
@@ -65,8 +72,8 @@ namespace CalendarFeedTest
             Assert.AreEqual(calendarDataBlock.Description, calendarDataList.First().Description);
             Assert.AreEqual(calendarDataBlock.Link, calendarDataList.First().Link);
             Assert.AreEqual(calendarDataBlock.PubDateString, calendarDataList.First().PubDateString);
-
         }
+
         [TestMethod]
         public void TestCalendarInvalidDataFromFile()
         {
@@ -93,6 +100,34 @@ namespace CalendarFeedTest
             StringAssert.StartsWith(calendarDataList.Last().PubDateString.ToString(), calendarDataBlock.PubDateString.ToString("d"));  // just check date
 
         }
+        [DataSource(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=D:\bbrock\documents\temp\TestDataFiles\CalendarTestDataSource.xlsx; Extended Properties='Excel 8.0; HDR=YES'", "TestData" )]
+        [TestMethod()]
+        public void TestCalendarDataDrivenFromDBFile()
+        {
+            // arrange  
+
+            CalendarFeed TestFeed = new CalendarFeed();
+            Rss calendarDataBlock = new Rss();
+            IEnumerable<Rss> calendarDataList = new Rss[0];
+
+            // call function to fill expected values
+
+            // act  
+            calendarDataBlock.Title = testContext.DataRow["ExpectedTitle"].ToString();
+            calendarDataBlock.Description = testContext.DataRow["ExpectedDescription"].ToString();
+            calendarDataBlock.Link = testContext.DataRow["ExpectedLink"].ToString();
+            calendarDataBlock.PubDateString = DateTime.Now;
+
+            calendarDataList = TestFeed.GetRssFeed(testContext.DataRow["GroupID"].ToString(), testContext.DataRow["NumberDays"].ToString(), testContext.DataRow["CalendarUrl"].ToString());  // must use invalid group id to use empty group index
+
+            // assert  
+            StringAssert.Contains(calendarDataList.Last().Title, calendarDataBlock.Title);
+            StringAssert.Contains(calendarDataList.Last().Description, calendarDataBlock.Description);
+            StringAssert.Contains(calendarDataList.Last().Link, calendarDataBlock.Link);
+            StringAssert.StartsWith(calendarDataList.Last().PubDateString.ToString(), calendarDataBlock.PubDateString.ToString("d"));  // just check date
+
+        }
+
 
 
         [TestMethod]
