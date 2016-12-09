@@ -12,14 +12,7 @@ namespace CalendarFeedTest
 {
     [TestClass]
     public class CalendarTest
-    {
-        private TestContext testContext;
-        public TestContext TestContext
-        {
-            get { return testContext; }
-            set { testContext = value; }
-        }
-
+    {   
         [TestMethod]
         public void TestCalendarValidData()
         {
@@ -159,6 +152,30 @@ namespace CalendarFeedTest
             StringAssert.Contains(calendarDataList.First().Link, calendarDataBlock.Link);
             StringAssert.StartsWith(calendarDataList.First().PubDateString.ToString(), calendarDataBlock.PubDateString.ToString("d"));  // just check date
         }
+
+        [TestMethod]
+        public void TestCalendarGroupIDOutOfRange()
+        {
+            // arrange  
+            CalendarFeed TestFeed = new CalendarFeed();
+            Rss calendarDataBlock = new Rss();
+            IEnumerable<Rss> calendarDataList = new Rss[0];
+
+            // act  
+            calendarDataBlock.Title = "Error";
+            calendarDataBlock.Description = "Number of days out of range";
+            calendarDataBlock.Link = "webmaster";
+            calendarDataBlock.PubDateString = DateTime.Now;
+
+            calendarDataList = TestFeed.GetRssFeed("Worship", "31", CalendarData.CalendarURL);
+
+            // assert  
+            StringAssert.Contains(calendarDataList.Last().Title, calendarDataBlock.Title);
+            StringAssert.Contains(calendarDataList.Last().Description, calendarDataBlock.Description);
+            StringAssert.Contains(calendarDataList.Last().Link, calendarDataBlock.Link);
+            StringAssert.StartsWith(calendarDataList.Last().PubDateString.ToString(), calendarDataBlock.PubDateString.ToString("d"));  // just check date
+        }
+
 
         //[DataSource(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=D:\bbrock\documents\temp\TestDataFiles\CalendarTestDataSource.xlsx; Extended Properties='Excel 8.0; HDR=YES'", "TestData" )]
         //[TestMethod()]

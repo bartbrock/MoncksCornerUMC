@@ -20,11 +20,7 @@ namespace MoncksCornerUMC.Models
         public static readonly string[] GroupIdIndex = new string[]
             {"98193646", "98186884", "98186885", "98186887", "98186883", "98186882", "98186886",""};
     }
-    public class EventsViewModel
-    {
-
-    }
-
+    
     public class Rss
     {
         // this data class is the calendar events
@@ -90,7 +86,7 @@ namespace MoncksCornerUMC.Models
             }
             else
             {
-                _errorCode += 1; // assign error code for out of range
+                _errorCode += 2; // assign error code for out of range
                 numDays = "7"; // set to default value if out of range
                 rssFeedUrl = rssURL + "&days=" + numDays + "&igd=" + _groupIndex;
             }
@@ -174,9 +170,13 @@ namespace MoncksCornerUMC.Models
                 }
                 if (errorCode == 1)  // Group ID error
                 {
+                    errorCode -= 1;
                     _errorReturn.Description += "Group ID error.  All events displayed.";
                 }
-
+                if (errorCode == 2)  // Group ID error
+                {
+                    _errorReturn.Description += "Number of days out of range.   7 days displayed.";
+                }
 
             }
             return _errorReturn;
