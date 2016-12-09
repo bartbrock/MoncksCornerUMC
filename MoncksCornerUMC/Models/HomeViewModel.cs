@@ -13,12 +13,12 @@ namespace MoncksCornerUMC.Models
     {
         // this class holds the constants used for the calendar events
 
-        public static string CalendarURL = "http://calendar.churchart.com/Calendar/RSS.ashx?days=14&ci=L6N8N8J4I3I3O9L6I3&igd=";
+        public static string CalendarURL = "http://calendar.churchart.com/Calendar/RSS.ashx?ci=L6N8N8J4I3I3O9L6I3";
 
         public static readonly string[] GroupIdTable = new string[]
-            {"BibleStudy","SpecialEvents","Youth","Seniors","Circles","Committees","Worship"};
+            {"BibleStudy","SpecialEvents","Youth","Seniors","Circles","Committees","Worship","All"};
         public static readonly string[] GroupIdIndex = new string[]
-            {"98193646", "98186884", "98186885", "98186887", "98186883", "98186882", "98186886" };
+            {"98193646", "98186884", "98186885", "98186887", "98186883", "98186882", "98186886",""};
     }
     public class EventsViewModel
     {
@@ -77,10 +77,25 @@ namespace MoncksCornerUMC.Models
             }
 
             // Create URL and verify
-            rssFeedUrl = rssURL + _groupIndex;
-            
-            GoodUrl = Uri.TryCreate(rssFeedUrl, UriKind.RelativeOrAbsolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;  // set to RelativeOrAbsolute for testing; reset to Absolute
+            var numDaysInteger = Convert.ToInt32(numDays);
 
+            if (numDaysInteger > 0 && numDaysInteger < 31)
+            {
+                rssFeedUrl = rssURL + "&days=" + numDays + "&igd=" + _groupIndex;
+            }
+            else if (numDaysInteger == 0)  // Used for testing 
+            {
+                rssFeedUrl = rssURL;
+                GoodUrl = Uri.TryCreate(rssFeedUrl, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
+            }
+            else
+            {
+                _errorCode += 1; // assign error code for out of range
+                numDays = "7"; // set to default value if out of range
+                rssFeedUrl = rssURL + "&days=" + numDays + "&igd=" + _groupIndex;
+            }
+            GoodUrl = Uri.TryCreate(rssFeedUrl, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
+            
             // Extract Data
             if (GoodUrl)
             {
