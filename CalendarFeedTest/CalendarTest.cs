@@ -27,16 +27,14 @@ namespace CalendarFeedTest
             calendarDataBlock.Link = "http://calendar.churchart.com/calendar/calendar.aspx?cei=262662443&event_date=12/11/2016&ci=73866977&igd=98186886";
             calendarDataBlock.PubDateString = Convert.ToDateTime(" 2016 - 12 - 11T14: 00:00Z ").ToLocalTime();
 
-            calendarDataList = TestFeed.GetRssFeed("Worship", "7", CalendarData.CalendarURL);
+            calendarDataList = TestFeed.GetRssFeed("Worship", "10", CalendarData.CalendarURL);
 
             // assert  
             Assert.AreEqual(calendarDataBlock.Title, calendarDataList.First().Title);
             Assert.AreEqual(calendarDataBlock.Description, calendarDataList.First().Description);
             Assert.AreEqual(calendarDataBlock.Link, calendarDataList.First().Link);
             Assert.AreEqual(calendarDataBlock.PubDateString, calendarDataList.First().PubDateString);
-
         }
-
 
         [TestMethod]
         public void TestCalendarValidDataFromFile()
@@ -98,7 +96,7 @@ namespace CalendarFeedTest
             calendarDataBlock.Link = "webmaster";
             calendarDataBlock.PubDateString = DateTime.Now;
 
-            calendarDataList = TestFeed.GetRssFeed("BadGroupID", "7", CalendarData.CalendarURL);
+            calendarDataList = TestFeed.GetRssFeed("BadGroupID", "5", CalendarData.CalendarURL);
 
             // assert  
             StringAssert.Contains(calendarDataList.Last().Title, calendarDataBlock.Title);
@@ -121,7 +119,7 @@ namespace CalendarFeedTest
             calendarDataBlock.Link = "webmaster";
             calendarDataBlock.PubDateString = DateTime.Now;
 
-            calendarDataList = TestFeed.GetRssFeed("Worship", "7", "hddp:/www.bartbrock.com/");
+            calendarDataList = TestFeed.GetRssFeed("Worship", "7", "hddp:/www.bartbrock.com/");  // invalid URL format
 
             // assert  
             StringAssert.Contains(calendarDataList.First().Title, calendarDataBlock.Title);
@@ -144,7 +142,7 @@ namespace CalendarFeedTest
             calendarDataBlock.Link = "webmaster";
             calendarDataBlock.PubDateString = DateTime.Now;
 
-            calendarDataList = TestFeed.GetRssFeed("Worship", "7", "http://www.bartbrock.com/");
+            calendarDataList = TestFeed.GetRssFeed("Worship", "7", "http://www.bartbrock.com/");  // returns HTTP data stream instead of RSS
 
             // assert  
             StringAssert.Contains(calendarDataList.First().Title, calendarDataBlock.Title);
